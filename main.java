@@ -23,6 +23,7 @@ class Solution {
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+// recursive approach
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         return addList(l1, l2, 0);
@@ -41,6 +42,32 @@ class Solution {
         return n;
     }
 }
+// iterative approach
+/*
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int carry = 0;
+        ListNode dummy = new ListNode();
+        ListNode curr = dummy;
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = 0;
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            sum += carry;
+            carry = sum / 10;
+            curr.next = new ListNode(sum % 10);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+}
+*/
 
 // 3. Longest Substring Without Repeating Characters
 class Solution {
@@ -60,6 +87,23 @@ class Solution {
         return res;
     }
 }
+// hashmap solution
+/*
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int start = -1, max = 0;
+        Map<Character, Integer> m = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (m.containsKey(s.charAt(i)) && start < m.get(s.charAt(i))) {
+                start = m.get(s.charAt(i));
+            }
+            max = Math.max(max, i - start);
+            m.put(s.charAt(i), i);
+        }
+        return max;
+    }
+};
+*/
 
 // 4. Median of Two Sorted Arrays
 class Solution {
