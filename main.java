@@ -135,6 +135,36 @@ class Solution {
         }
     }
 }
+/*
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        List<Integer> list = new ArrayList<>();
+        int i = 0, j = 0;
+        while (i < nums1.length || j < nums2.length) {
+            if (i < nums1.length && j < nums2.length) {
+                if (nums1[i] < nums2[j]) {
+                    list.add(nums1[i++]);
+                } else {
+                    list.add(nums2[j++]);
+                }
+            } else {
+                if (i < nums1.length) {
+                    list.add(nums1[i++]);
+                } else {
+                    list.add(nums2[j++]);
+                }
+            }
+        }
+        int listSize = list.size();
+        int target = listSize / 2;
+        if (listSize % 2 == 0) {
+            return (list.get(target) + list.get(target - 1)) / 2.0;
+        } else {
+            return (double)list.get(target);
+        }
+    }
+}
+*/
 
 // 5. Longest Palindromic Substring
 class Solution {
