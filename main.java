@@ -186,6 +186,29 @@ class Solution {
         return max;
     }
 }
+/*
+class Solution {
+    public String longestPalindrome(String s) {
+        int i = 0, resStart = 0, resEnd = 0;
+        while (i < s.length()) {
+            int left = i;
+            while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+                i++;
+            }
+            int right = i++;
+            while (0 <= left && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            }
+            if (resEnd - resStart < right - left) {
+                resEnd = right;
+                resStart = left + 1;
+            }
+        }
+        return s.substring(resStart, resEnd);
+    }
+}
+*/
 
 // 6. ZigZag Conversion
 class Solution {
@@ -193,13 +216,13 @@ class Solution {
         if (numRows == 1) {
             return s;
         }
-        List<StringBuilder> tmp = new ArrayList<>(numRows);
+        List<StringBuilder> list = new ArrayList<>();
         for (int i = 0; i < numRows; i++) {
-            tmp.add(new StringBuilder());
+            list.add(new StringBuilder());
         }
         int d = 1, row = 0;
-        for (int i = 0; i < s.length(); i++) {
-            tmp.get(row).append(String.valueOf(s.charAt(i)));
+        for (char c : s.toCharArray()) {
+            list.get(row).append(c);
             row += d;
             if (row == numRows - 1) {
                 d = -1;
@@ -207,11 +230,11 @@ class Solution {
                 d = 1;
             }
         }
-        String res = "";
-        for (StringBuilder v: tmp) {
-            res += v.toString();
+        StringBuilder res = new StringBuilder();
+        for (StringBuilder sb : list) {
+            res.append(sb.toString());
         }
-        return res;
+        return res.toString();
     }
 }
 
