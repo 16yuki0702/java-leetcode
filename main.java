@@ -399,6 +399,29 @@ class Solution {
         return p;
     }
 }
+/*
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        String res = strs[0];
+        StringBuilder curr = new StringBuilder();
+        for (int i = 1; i < strs.length; i++) {
+            if (res.isEmpty()) {
+                return "";
+            }
+            String tmp = strs[i];
+            int j = 0, k = 0;
+            while (j < res.length() && k < tmp.length() && res.charAt(j) == tmp.charAt(k)) {
+                curr.append(res.charAt(j));
+                j++;
+                k++;
+            }
+            res = curr.toString();
+            curr.setLength(0);
+        }
+        return res;
+    }
+}
+*/
 
 // 15. 3Sum
 class Solution {
