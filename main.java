@@ -483,3 +483,60 @@ class Solution {
         return res;
     }
 }
+/*
+class Solution {
+    private void swap(int[] nums, int l, int r) {
+        int tmp = nums[l];
+        nums[l] = nums[r];
+        nums[r] = tmp;
+    }
+    private void qSort(int[] nums, int l, int r) {
+        if (r <= l) {
+            return;
+        }
+        int m = l + (r - l) / 2, p = l;
+        swap(nums, m, r);
+        for (int i = l; i < r; i++) {
+            if (nums[i] < nums[r]) {
+                swap(nums, i, p++);
+            }
+        }
+        swap(nums, p, r);
+        qSort(nums, l, p - 1);
+        qSort(nums, p + 1, r);
+    }
+    public List<List<Integer>> threeSum(int[] nums) {
+        qSort(nums, 0, nums.length - 1);
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        for (int i = 0; i < nums.length; i++) {
+            if (0 < i && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int l = i + 1, r = nums.length - 1;
+            while (l < r) {
+                int sum = nums[i] + nums[l] + nums[r];
+                if (sum < 0) {
+                    l++;
+                } else if (0 < sum) {
+                    r--;
+                } else {
+                    res.add(
+                        new ArrayList<>(
+                            Arrays.asList(nums[i], nums[l], nums[r])
+                        )
+                    );
+                    while (l < r && nums[l] == nums[l + 1]) {
+                        l++;
+                    }
+                    while (l < r && nums[r] == nums[r - 1]) {
+                        r--;
+                    }
+                    l++;
+                    r--;
+                }
+            }
+        }
+        return res;
+    }
+}
+*/
