@@ -583,3 +583,34 @@ class Solution {
         return res;
     }
 }
+
+// 17. Letter Combinations of a Phone Number
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        Map<Character, String> m = new HashMap<>();
+        m.put('2', "abc");
+        m.put('3', "def");
+        m.put('4', "ghi");
+        m.put('5', "jkl");
+        m.put('6', "mno");
+        m.put('7', "pqrs");
+        m.put('8', "tuv");
+        m.put('9', "wxyz");
+        List<String> res = new ArrayList<>();
+        for (char c : digits.toCharArray()) {
+            String curr = m.get(c);
+            List<String> tmp = new ArrayList<>();
+            for (char cc : curr.toCharArray()) {
+                if (res.isEmpty()) {
+                    tmp.add(Character.toString(cc));
+                } else {
+                    for (String s : res) {
+                        tmp.add(s + Character.toString(cc));
+                    }
+                }
+            }
+            res = tmp;
+        }
+        return res;
+    }
+}
