@@ -676,3 +676,94 @@ class Solution {
         return res;
     }
 }
+
+// 19. Remove Nth Node From End of List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head, dummy = new ListNode(-1, head);
+        ListNode slow = dummy;
+        while (n-- != 0) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+}
+
+// 20. Valid Parentheses
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if (top == '(' && c == ')') {
+                    continue;
+                } else if (top == '{' && c == '}') {
+                    continue;
+                } else if (top == '[' && c == ']') {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+// 21. Merge Two Sorted Lists
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode();
+        ListNode curr = dummy;
+        while (list1 != null || list2 != null) {
+            if (list1 == null) {
+                curr.next = list2;
+                break;
+            }
+            if (list2 == null) {
+                curr.next = list1;
+                break;
+            }
+            if (list1.val < list2.val) {
+                curr.next = list1;
+                list1 = list1.next;
+            } else {
+                curr.next = list2;
+                list2 = list2.next;
+            }
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+}
