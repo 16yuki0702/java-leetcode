@@ -767,3 +767,24 @@ class Solution {
         return dummy.next;
     }
 }
+
+// 22. Generate Parentheses
+class Solution {
+    private void backTrack(List<String> res, String curr, int open, int close, int max) {
+        if (curr.length() == max * 2) {
+            res.add(curr);
+            return;
+        }
+        if (open < max) {
+            backTrack(res, curr + "(", open + 1, close, max);
+        }
+        if (close < open) {
+            backTrack(res, curr + ")", open, close + 1, max);
+        }
+    }
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        backTrack(res, "", 0, 0, n);
+        return res;
+    }
+}
