@@ -895,3 +895,31 @@ class Solution {
         return dummy.next;
     }
 }
+/*
+class Solution {
+    private int listLength(ListNode head) {
+        int res = 0;
+        while (head != null) {
+            res++;
+            head = head.next;
+        }
+        return res;
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(-1, head);
+        ListNode prev = dummy;
+        int len = listLength(head);
+        for (int i = 0; i < len / k; i++) {
+            for (int j = 1; j < k; j++) {
+                ListNode tmp = prev.next;
+                prev.next = head.next;
+                head.next = head.next.next;
+                prev.next.next = tmp;
+            }
+            prev = head;
+            head = head.next;
+        }
+        return dummy.next;
+    }
+}
+*/
