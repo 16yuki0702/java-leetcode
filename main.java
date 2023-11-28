@@ -936,3 +936,54 @@ class Solution {
         return i + 1;
     }
 }
+
+// 27. Remove Element
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val) {
+                nums[i++] = nums[j];
+            }
+        }
+        return i;
+    }
+}
+
+// 28. Find the Index of the First Occurrence in a String
+class Solution {
+    public int strStr(String haystack, String needle) {
+        for (int i = 0; i <= haystack.length() - needle.length(); i++) {
+            int j = i, k = 0;
+            while (k < needle.length() && haystack.charAt(j) == needle.charAt(k)) {
+                j++;
+                k++;
+            }
+            if (k == needle.length()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+// 29. Divide Two Integers
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        boolean isNegative = dividend < 0 ^ divisor < 0;
+
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        int quotient = 0, subQuot = 0;
+
+        while (dividend - divisor >= 0) {
+            for (subQuot = 0; dividend - (divisor << subQuot << 1) >= 0; subQuot++);
+            quotient += 1 << subQuot;
+            dividend -= divisor << subQuot;
+        }
+        return isNegative ? -quotient : quotient;
+    }
+}
