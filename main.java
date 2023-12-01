@@ -987,3 +987,84 @@ class Solution {
         return isNegative ? -quotient : quotient;
     }
 }
+
+// 30. Substring with Concatenation of All Words
+class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        if (words[0].length() * words.length > s.length()) {
+            return new ArrayList<>();
+        }
+        Map<String, Integer> wfreq = new HashMap<>();
+        List<Integer> res = new ArrayList<>();
+
+        for (String str : words) {
+            wfreq.put(str, wfreq.getOrDefault(str, 0) + 1);
+        }
+        int wlen = words[0].length();
+        String[] strs = new String[s.length()];
+
+        for (int i = 0; i < wlen; i++) {
+            Map<String, Integer> frq = new HashMap<>();
+            int begin = i, size = 0;
+            for (int j = i; j <= s.length() - wlen; j += wlen) {
+                strs[j] = s.substring(j, j + wlen);
+                if (wfreq.containsKey(strs[j])) {
+                    begin = begin == -1 ? j : begin;
+                    frq.put(strs[j], frq.getOrDefault(strs[j], 0) + 1);
+                    size++;
+                    if (size == words.length) {
+                        if (frq.equals(wfreq)) {
+                            res.add(begin);
+                        }
+                        frq.put(strs[begin], frq.get(strs[begin]) - 1);
+                        begin += wlen;
+                        size--;
+                    }
+                } else {
+                    begin = -1;
+                    size = 0;
+                    frq.clear();
+                }
+            }
+        }
+        return res;
+    }
+}
+
+// 31. Next Permutation
+class Solution {
+    void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    void reverse(int[] nums, int start) {
+        int i = start, j = nums.length - 1;
+        while (i < j) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
+    public void nextPermutation(int[] nums) {
+        int i1 = -1, i2 = -1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) {
+                i1 = i;
+                break;
+            }
+        }
+        if (i1 == -1) {
+            reverse(nums, 0);
+        } else {
+            for (int i = nums.length - 1; i >= 0; i--) {
+                if (nums[i] > nums[i1]) {
+                    i2 = i;
+                    break;
+                }
+            }
+            swap(nums, i1, i2);
+            reverse(nums, i1 + 1);
+        }
+    }
+}
