@@ -1090,3 +1090,102 @@ class Solution {
         return res;
     }
 }
+
+// 33. Search in Rotated Sorted Array
+class Solution {
+    public int search(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            if (nums[l] == target) {
+                return l;
+            } else if (nums[r] == target) {
+                return r;
+            }
+            int m = l + (r - l) / 2;
+            if (nums[m] == target) {
+                return m;
+            }
+            if (nums[l] <= nums[m]) {
+                if (nums[l] < target && target < nums[m]) {
+                    r = m - 1;
+                } else {
+                    l = m + 1;
+                }
+            } else {
+                if (nums[m] < target && target < nums[r]) {
+                    l = m + 1;
+                } else {
+                    r = m - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+// 34. Find First and Last Position of Element in Sorted Array
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (target < nums[m]) {
+                r = m - 1;
+            } else if (nums[m] < target) {
+                l = m + 1;
+            } else {
+                if (nums[l] < target) {
+                    l++;
+                }
+                if (target < nums[r]) {
+                    r--;
+                }
+                if (nums[l] == nums[r]) {
+                    return new int[]{l, r};
+                }
+            }
+        }
+        return new int[]{-1, -1};
+    }
+}
+
+// 35. Search Insert Position
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int l = 0, r = nums.length;
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            if (target <= nums[m]) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+        }
+        return l;
+    }
+}
+
+// 36. Valid Sudoku
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        boolean rows[][] = new boolean[9][9];
+        boolean cols[][] = new boolean[9][9];
+        boolean blks[][] = new boolean[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    continue;
+                }
+                int c = board[i][j] - '1';
+                int p = (i / 3 * 3) + (j / 3);
+                if (rows[i][c] || cols[j][c] || blks[p][c]) {
+                    return false;
+                }
+                rows[i][c] = true;
+                cols[j][c] = true;
+                blks[p][c] = true;
+            }
+        }
+        return true;
+    }
+}
