@@ -1189,3 +1189,165 @@ class Solution {
         return true;
     }
 }
+
+// 37. Sudoku Solver
+class Solution {
+    private static final char cs[] = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private boolean inCell(char[][] board, int row, int col, char target) {
+        int r = row / 3, c = col / 3;
+        for (int i = 0; i < 9; i++) {
+            if (board[3 * r + i / 3][3 * c + i % 3] == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean inCol(char[][] board, int row, int col, char target) {
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col] == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean inRow(char[][] board, int row, int col, char target) {
+        for (int i = 0; i < 9; i++) {
+            if (board[row][i] == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean solve(char[][] board, int row, int col) {
+        if (9 == row) {
+            return true;
+        }
+        int nRow = 0, nCol = 0;
+        if (9 == col + 1) {
+            nRow = row + 1;
+            nCol = 0;
+        } else {
+            nRow = row;
+            nCol = col + 1;
+        }
+        if (board[row][col] != '.') {
+            return solve(board, nRow, nCol);
+        }
+        for (int i = 0; i < 9; i++) {
+            char c = cs[i];
+            if (inRow(board, row, col, c) || inCol(board, row, col, c) || inCell(board, row, col, c)) {
+                continue;
+            }
+            board[row][col] = c;
+            if (solve(board, nRow, nCol)) {
+                return true;
+            }
+        }
+        board[row][col] = '.';
+        return false;
+    }
+    public void solveSudoku(char[][] board) {
+        solve(board, 0, 0);
+    }
+}
+
+// 38. Count and Say
+class Solution {
+    public String countAndSay(int n) {
+        if (n == 1) {
+            return "1";
+        } else if (n == 2) {
+            return "11";
+        }
+        StringBuilder res = new StringBuilder("11");
+        for (int i = 3; i <= n; i++) {
+            StringBuilder tmp = new StringBuilder();
+            res.append(' ');
+            int c = 1;
+            for (int j = 1; j < res.length(); j++) {
+                if (res.charAt(j) == res.charAt(j - 1)) {
+                    c++;
+                } else {
+                    tmp.append(Integer.toString(c));
+                    tmp.append(res.charAt(j - 1));
+                    c = 1;
+                }
+            }
+            res = tmp;
+        }
+        return res.toString();
+    }
+}
+
+// 39. Combination Sum
+class Solution {
+    private void backTrack(List<List<Integer>> res, LinkedList<Integer> curr, int[] candidates, int target, int sum, int start) {
+        if (target < sum) {
+            return;
+        }
+        if (target == sum) {
+            res.add(new LinkedList<>(curr));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            sum += candidates[i];
+            curr.push(candidates[i]);
+            backTrack(res, curr, candidates, target, sum, i);
+            curr.pop();
+            sum -= candidates[i];
+        }
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new LinkedList<>();
+        backTrack(res, new LinkedList<>(), candidates, target, 0, 0);
+        return res;
+    }
+}
+
+// 40. Combination Sum II
+class Solution {
+    private void swap(int[]v, int p1, int p2) {
+        int tmp = v[p1];
+        v[p1] = v[p2];
+        v[p2] = tmp;
+    }
+    private void qSort(int[] v, int l, int r) {
+        if (r <= l) {
+            return;
+        }
+        int m = l + (r - l) / 2, p = l;
+        swap(v, m, r);
+        for (int i = l; i < r; i++) {
+            if (v[i] < v[r]) {
+                swap(v, p++, i);
+            }
+        }
+        swap(v, p, r);
+        qSort(v, l, p - 1);
+        qSort(v, p + 1, r);
+    }
+    private void backTrack(List<List<Integer>> res, LinkedList<Integer> curr, int[] nums, int target, int sum, int start) {
+        if (sum == target) {
+            res.add(new LinkedList<>(curr));
+            return;
+        } else if (target < sum) {
+            return;
+        }
+        for (int i = start; i < nums.length; i++) {
+            if (start < i && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            sum += nums[i];
+            curr.push(nums[i]);
+            backTrack(res, curr, nums, target, sum, i + 1);
+            curr.pop();
+            sum -= nums[i];
+        }
+    }
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new LinkedList<>();
+        qSort(candidates, 0, candidates.length - 1);
+        backTrack(res, new LinkedList<>(), candidates, target, 0, 0);
+        return res;
+    }
+}
