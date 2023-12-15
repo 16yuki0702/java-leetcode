@@ -1351,3 +1351,127 @@ class Solution {
         return res;
     }
 }
+
+// 41. First Missing Positive
+class Solution {
+    private void swap(int[] nums, int p1, int p2) {
+        int tmp = nums[p1];
+        nums[p1] = nums[p2];
+        nums[p2] = tmp;
+    }
+    private void qSort(int[] nums, int l, int r) {
+        if (r <= l) {
+            return;
+        }
+        int m = l + (r - l) / 2, p = l;
+        swap(nums, m, r);
+        for (int i = l; i < r; i++) {
+            if (nums[i] < nums[r]) {
+                swap(nums, p++, i);
+            }
+        }
+        swap(nums, p, r);
+        qSort(nums, l, p - 1);
+        qSort(nums, p + 1, r);
+    }
+    public int firstMissingPositive(int[] nums) {
+        qSort(nums, 0, nums.length -1);
+        int res = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == res) {
+                res++;
+            }
+        }
+        return res;
+    }
+}
+
+// 42. Trapping Rain Water
+class Solution {
+    public int trap(int[] height) {
+        int l = 0, r = height.length - 1;
+        int maxl = height[l], maxr = height[r], res = 0;
+        while (l <= r) {
+            if (maxl < maxr) {
+                if (height[l] < maxl) {
+                    res += maxl - height[l];
+                } else {
+                    maxl = height[l];
+                }
+                l++;
+            } else {
+                if (height[r] < maxr) {
+                    res += maxr - height[r];
+                } else {
+                    maxr = height[r];
+                }
+                r--;
+            }
+        }
+        return res;
+    }
+}
+
+// 43. Multiply Strings
+class Solution {
+    public String multiply(String num1, String num2) {
+        int m = num1.length(), n = num2.length();
+        int[] pos = new int[m + n];
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int sum = mul + pos[i + j + 1];
+                pos[i + j] += sum / 10;
+                pos[i + j + 1] = sum % 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int p : pos) {
+            if (!(sb.length() == 0 && p == 0)) {
+                sb.append(p);
+            }
+        }
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
+
+// 44. Wildcard Matching
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length(), n = p.length();
+        int i = 0, j = 0, ast = -1, match = 0;
+        while (i < m) {
+            if (j < n && p.charAt(j) == '*') {
+                match = i;
+                ast = j++;
+            } else if (j < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')) {
+                i++;
+                j++;
+            } else if (ast >= 0) {
+                i = ++match;
+                j = ast + 1;
+            } else {
+                return false;
+            }
+        }
+        while (j < n && p.charAt(j) == '*') {
+            j++;
+        }
+        return j == n;
+    }
+}
+
+// 45. Jump Game II
+class Solution {
+    public int jump(int[] nums) {
+        int step = 0, curr = 0, dest = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            dest = Math.max(dest, i + nums[i]);
+            if (curr == i) {
+                step++;
+                curr = dest;
+            }
+        }
+        return step;
+    }
+}
