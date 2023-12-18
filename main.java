@@ -1475,3 +1475,26 @@ class Solution {
         return step;
     }
 }
+
+// 46. Permutations
+class Solution {
+    private void backTrack(List<List<Integer>> res, List<Integer> curr, int[] nums) {
+        if (curr.size() == nums.length) {
+            res.add(new ArrayList<>(curr));
+        } else {
+            for (int i = 0; i < nums.length; i++) {
+                if (curr.contains(nums[i])) {
+                    continue;
+                }
+                curr.add(nums[i]);
+                backTrack(res, curr, nums);
+                curr.remove(curr.size() - 1);
+            }
+        }
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        backTrack(res, new ArrayList<>(), nums);
+        return res;
+    }
+}
