@@ -1498,3 +1498,205 @@ class Solution {
         return res;
     }
 }
+
+// 47. Permutations II
+class Solution {
+    private void backTrack(List<List<Integer>> res, Set<List<Integer>> set, int[] nums, int start) {
+        if (start == nums.length) {
+            List<Integer> curr = toList(nums);
+            if (!set.contains(curr)) {
+                res.add(curr);
+                set.add(curr);
+            }
+        } else {
+            for (int i = start; i < nums.length; i++) {
+                swap(nums, start, i);
+                backTrack(res, set, nums, start + 1);
+                swap(nums, start, i);
+            }
+        }
+    }
+    private List<Integer> toList(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int n : nums) {
+            list.add(n);
+        }
+        return list;
+    }
+    private void swap(int[] nums, int p1, int p2) {
+        int tmp = nums[p1];
+        nums[p1] = nums[p2];
+        nums[p2] = tmp;
+    }
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Set<List<Integer>> set = new HashSet<>();
+        backTrack(res, set, nums, 0);
+        return res;
+    }
+}
+
+// 48. Rotate Image
+class Solution {
+    private void swap(int[][] m, int x1, int y1, int x2, int y2) {
+        int tmp = m[x1][y1];
+        m[x1][y1] = m[x2][y2];
+        m[x2][y2] = tmp;
+    }
+    public void rotate(int[][] matrix) {
+        for (int x = 0; x < matrix[0].length; x++) {
+            for (int y = x + 1; y < matrix.length; y++) {
+                swap(matrix, x, y, y, x);
+            }
+        }
+        int l = 0, r = matrix[0].length - 1;
+        while (l < r) {
+            for (int i = 0; i < matrix.length; i++) {
+                swap(matrix, i, l, i, r);
+            }
+            l++;
+            r--;
+        }
+    }
+}
+
+// 49. Group Anagrams
+class Solution {
+    private String hash(String s) {
+        int[] b = new int[26];
+        for (char c : s.toCharArray()) {
+            b[c - 'a']++;
+        }
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < 26; i++) {
+            res.append(Integer.valueOf(b[i]).toString());
+            res.append("/");
+        }
+        return res.toString();
+    }
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> m = new HashMap<>();
+        for (String s : strs) {
+            String h = hash(s);
+            if (!m.containsKey(h)) {
+                m.put(h, new ArrayList<>());
+            }
+            m.get(h).add(s);
+        }
+        return new ArrayList<>(m.values());
+    }
+}
+
+// 50. Pow(x, n)
+class Solution {
+    private double pow(double x, double res, long n) {
+        if (n == 0) {
+            return res;
+        }
+        if ((n & 1) == 1) {
+            res *= x;
+        }
+        return pow(x * x, res, n >> 1);
+    }
+    public double myPow(double x, int n) {
+        long nn = n;
+        if (nn == 0) {
+            return 1.0;
+        }
+        if (nn < 0) {
+            x = 1 / x;
+            nn = -nn;
+        }
+        return pow(x, 1.0, nn);
+    }
+}
+
+// 51. N-Queens
+class Solution {
+    private boolean isDiagonal(char[][] board, int row, int col, int n) {
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return true;
+            }
+        }
+        for (int i = row, j = col; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void backTrack(List<List<String>> res, char[][] board, boolean[] cols, int row, int n) {
+        if (row == n) {
+            List<String> tmp = new ArrayList<>();
+            for (char[] cs : board) {
+                tmp.add(new String(cs));
+            }
+            res.add(tmp);
+            return;
+        }
+        for (int col = 0; col < n; col++) {
+            if (cols[col] || isDiagonal(board, row, col, n)) {
+                continue;
+            }
+            cols[col] = true;
+            board[row][col] = 'Q';
+            backTrack(res, board, cols, row + 1, n);
+            cols[col] = false;
+            board[row][col] = '.';
+        }
+    }
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (char[] row : board) {
+            Arrays.fill(row, '.');
+        }
+        boolean[] cols = new boolean[n];
+        backTrack(res, board, cols, 0, n);
+        return res;
+    }
+}
+
+// 52. N-Queens II
+class Solution {
+    private int res = 0;
+    private boolean isDiagonal(char[][] board, int row, int col, int n) {
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return true;
+            }
+        }
+        for (int i = row, j = col; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void backTrack(char[][] board, boolean[] cols, int row, int n) {
+        if (row == n) {
+            this.res++;
+            return;
+        }
+        for (int col = 0; col < n; col++) {
+            if (cols[col] || isDiagonal(board, row, col, n)) {
+                continue;
+            }
+            cols[col] = true;
+            board[row][col] = 'Q';
+            backTrack(board, cols, row + 1, n);
+            board[row][col] = '.';
+            cols[col] = false;
+        }
+    }
+    public int totalNQueens(int n) {
+        char[][] board = new char[n][n];
+        for (char[] row : board) {
+            Arrays.fill(row, '.');
+        }
+        boolean[] cols = new boolean[n];
+        backTrack(board, cols, 0, n);
+        return this.res;
+    }
+}
