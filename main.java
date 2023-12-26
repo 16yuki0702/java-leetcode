@@ -1700,3 +1700,18 @@ class Solution {
         return this.res;
     }
 }
+
+// 53. Maximum Subarray
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int res = Integer.MIN_VALUE, curr = 0;
+        for (int n : nums) {
+            curr += n;
+            if (curr < n) {
+                curr = n;
+            }
+            res = Math.max(res, curr);
+        }
+        return res;
+    }
+}
