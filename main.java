@@ -1715,3 +1715,91 @@ class Solution {
         return res;
     }
 }
+
+// 54. Spiral Matrix
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int left = 0, right = matrix[0].length - 1, top = 0, bottom = matrix.length - 1;
+        List<Integer> res = new ArrayList<>();
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                res.add(matrix[top][i]);
+            }
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                res.add(matrix[i][right]);
+            }
+            right--;
+            if (right < left || bottom < top) {
+                break;
+            }
+            for (int i = right; i >= left; i--) {
+                res.add(matrix[bottom][i]);
+            }
+            bottom--;
+            for (int i = bottom; i >= top; i--) {
+                res.add(matrix[i][left]);
+            }
+            left++;
+        }
+        return res;
+    }
+}
+
+// 55. Jump Game
+class Solution {
+    public boolean canJump(int[] nums) {
+        int curr = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (curr < i) {
+                return false;
+            }
+            curr = Math.max(curr, i + nums[i]);
+        }
+        return nums.length - 1 <= curr;
+    }
+}
+
+// 56. Merge Intervals
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> res = new ArrayList<>();
+        Arrays.sort(intervals, (v1, v2) -> v1[0] - v2[0]);
+        int[] curr = intervals[0];
+        for (int i = 1; i < intervals.length; i++) {
+            int[] tmp = intervals[i];
+            if (curr[1] < tmp[0]) {
+                res.add(curr);
+                curr = tmp;
+            } else if (tmp[1] < curr[0]) {
+                res.add(tmp);
+            } else {
+                curr[0] = Math.min(curr[0], tmp[0]);
+                curr[1] = Math.max(curr[1], tmp[1]);
+            }
+        }
+        res.add(curr);
+        return res.toArray(new int[0][]);
+    }
+}
+
+// 57. Insert Interval
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> res = new ArrayList<>();
+        for (int i = 0; i < intervals.length; i++) {
+            int[] tmp = intervals[i];
+            if (newInterval[1] < tmp[0]) {
+                res.add(newInterval);
+                newInterval = tmp;
+            } else if (tmp[1] < newInterval[0]) {
+                res.add(tmp);
+            } else {
+                newInterval[0] = Math.min(newInterval[0], tmp[0]);
+                newInterval[1] = Math.max(newInterval[1], tmp[1]);
+            }
+        }
+        res.add(newInterval);
+        return res.toArray(new int[0][]);
+    }
+}
