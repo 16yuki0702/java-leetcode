@@ -1852,3 +1852,69 @@ class Solution {
         return res;
     }
 }
+
+// 60. Permutation Sequence
+class Solution {
+    public String getPermutation(int n, int k) {
+        StringBuilder res = new StringBuilder();
+        List<Integer> num = new ArrayList<>();
+        int fact = 1;
+        for (int i = 1; i < n; i++) {
+            fact *= i;
+            num.add(i);
+        }
+        num.add(n);
+        k = k - 1;
+        while (true) {
+            res.append(Integer.toString(num.get(k / fact)));
+            num.remove(k / fact);
+            if (num.size() == 0) {
+                break;
+            }
+            k %= fact;
+            fact /= num.size();
+        }
+        return res.toString();
+    }
+}
+
+// 61. Rotate List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) {
+            return head;
+        }
+        int count = 0;
+        ListNode tmp = head;
+        while (tmp != null) {
+            count++;
+            tmp = tmp.next;
+        }
+        int p = k % count;
+        if (p == 0) {
+            return head;
+        }
+        ListNode fast = head, slow = head;
+        for (int i = 0; i < p; i++) {
+            fast = fast.next;
+        }
+        while (fast != null && fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        ListNode res = slow.next;
+        slow.next = null;
+        fast.next = head;
+        return res;
+    }
+}
