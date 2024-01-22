@@ -1983,3 +1983,51 @@ class Solution {
         return dp[m - 1][n - 1];
     }
 }
+
+// 65. Valid Number
+class Solution {
+    public boolean isNumber(String s) {
+        s = s.trim();
+        boolean digitSeen = false, dotSeen = false, eSeen = false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                digitSeen = true;
+            } else if (c == '+' || c == '-') {
+                if (0 < i && s.charAt(i - 1) != 'e' && s.charAt(i - 1) != 'E') {
+                    return false;
+                }
+            } else if (c == '.') {
+                if (dotSeen || eSeen) {
+                    return false;
+                }
+                dotSeen = true;
+            } else if (c == 'e' || c == 'E') {
+                if (eSeen || !digitSeen) {
+                    return false;
+                }
+                eSeen = true;
+                digitSeen = false;
+            } else {
+                return false;
+            }
+        }
+        return digitSeen;
+    }
+}
+
+// 66. Plus One
+class Solution {
+    public int[] plusOne(int[] digits) {
+        for (int i = digits.length - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
+                digits[i]++;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
+        return digits;
+    }
+}
