@@ -2031,3 +2031,58 @@ class Solution {
         return digits;
     }
 }
+
+// 67. Add Binary
+class Solution {
+    public String addBinary(String a, String b) {
+        int i = a.length() - 1, j = b.length() - 1, carry = 0;
+        StringBuilder res = new StringBuilder();
+        while (0 <= i || 0 <= j || carry == 1) {
+            if (0 <= i) {
+                carry += a.charAt(i--) - '0';
+            }
+            if (0 <= j) {
+                carry += b.charAt(j--) - '0';
+            }
+            res.append(carry % 2);
+            carry /= 2;
+        }
+        return res.reverse().toString();
+    }
+}
+
+// 68. Text Justification
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> res = new ArrayList<>();
+        if (maxWidth == 0) {
+            return res;
+        }
+        int i = 0, j = 0;
+        while (j != words.length) {
+            int len = -1;
+            while (j < words.length && len + words[j].length() + 1 <= maxWidth) {
+                len += words[j++].length() + 1;
+            }
+            int space = maxWidth - len + j - i - 1;
+            int k = i;
+            while (0 < space) {
+                words[k++] += " ";
+                space--;
+                if (j != words.length && (k == j - 1 || k == j)) {
+                    k = i;
+                }
+                if (j == words.length && k == j) {
+                    k = j - 1;
+                }
+            }
+            StringBuilder line = new StringBuilder();
+            for (int l = i; l < j; l++) {
+                line.append(words[l]);
+            }
+            res.add(line.toString());
+            i = j;
+        }
+        return res;
+    }
+}
