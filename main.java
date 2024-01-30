@@ -2086,3 +2086,78 @@ class Solution {
         return res;
     }
 }
+
+// 69. Sqrt(x)
+class Solution {
+    public int mySqrt(int x) {
+        if (x <= 1) {
+            return x;
+        }
+        int res = x / 2;
+        while (true) {
+            int tmp = (res + x / res) / 2;
+            if (res <= tmp) {
+                return res;
+            }
+            res = tmp;
+        }
+    }
+}
+
+// 70. Climbing Stairs
+class Solution {
+    public int climbStairs(int n) {
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        int prev = 1, curr = 2;
+        for (int i = 3; i <= n; i++) {
+            int tmp = prev + curr;
+            prev = curr;
+            curr = tmp;
+        }
+        return curr;
+    }
+}
+
+// 71. Simplify Path
+class Solution {
+    public String simplifyPath(String path) {
+        String[] paths = path.split("/");
+        List<String> res = new ArrayList<>();
+        for (String p : paths) {
+            if (p.equals("..")) {
+                if (!res.isEmpty()) {
+                    res.remove(res.size() - 1);
+                }
+            } else if (!p.equals("") && !p.equals(".")) {
+                res.add(p);
+            }
+        }
+        return "/" + String.join("/", res);
+    }
+}
+
+// 72. Edit Distance
+class Solution {
+    public int minDistance(String word1, String word2) {
+        final int m = word1.length(), n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
