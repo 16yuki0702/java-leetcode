@@ -2161,3 +2161,116 @@ class Solution {
         return dp[m][n];
     }
 }
+
+// 73. Set Matrix Zeroes
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        boolean isFirstRow = false, isFirstCol = false;
+        int m = matrix.length, n = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    if (i == 0) {
+                        isFirstRow = true;
+                    }
+                    if (j == 0) {
+                        isFirstCol = true;
+                    }
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (isFirstRow) {
+            for (int i = 0; i < n; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+        if (isFirstCol) {
+            for (int i = 0; i < m; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+
+// 74. Search a 2D Matrix
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length, n = matrix[0].length;
+        int l = 0, r = m * n - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int midv = matrix[mid / n][mid % n];
+            if (midv == target) {
+                return true;
+            } else if (midv < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return false;
+    }
+}
+
+// 75. Sort Colors
+class Solution {
+    private void swap(int[] nums, int l, int r) {
+        int tmp = nums[l];
+        nums[l] = nums[r];
+        nums[r] = tmp;
+    }
+    public void sortColors(int[] nums) {
+        int l = 0, r = nums.length - 1, i = 0;
+        while (i <= r) {
+            if (nums[i] == 0) {
+                swap(nums, l++, i++);
+            } else if (nums[i] == 1) {
+                i++;
+            } else {
+                swap(nums, i, r--);
+            }
+        }
+    }
+}
+
+// 76. Minimum Window Substring
+class Solution {
+    public String minWindow(String s, String t) {
+        Map<Character, Integer> m = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            m.put(c, m.getOrDefault(c, 0) + 1);
+        }
+        int unique = m.size(), start = 0, end = 0;
+        int resStart = 0, resLen = Integer.MAX_VALUE;
+        while (end < s.length()) {
+            char c = s.charAt(end);
+            m.put(c, m.getOrDefault(c, 0) - 1);
+            if (m.get(c) == 0) {
+                unique--;
+            }
+            while (unique == 0) {
+                if (end - start + 1 < resLen) {
+                    resLen = end - start + 1;
+                    resStart = start;
+                }
+                char startChar = s.charAt(start);
+                m.put(startChar, m.get(startChar) + 1);
+                if (m.get(startChar) > 0) {
+                    unique++;
+                }
+                start++;
+            }
+            end++;
+        }
+        return resLen == Integer.MAX_VALUE ? "" : s.substring(resStart, resStart + resLen);
+    }
+}
