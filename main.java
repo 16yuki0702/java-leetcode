@@ -2274,3 +2274,91 @@ class Solution {
         return resLen == Integer.MAX_VALUE ? "" : s.substring(resStart, resStart + resLen);
     }
 }
+
+// 77. Combinations
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> curr = new ArrayList<>();
+        backTrack(res, curr, 1, n, k);
+        return res;
+    }
+    private void backTrack(List<List<Integer>> res, List<Integer> curr, int idx, int n, int k) {
+        if (curr.size() == k) {
+            res.add(new ArrayList<>(curr));
+            return;
+        }
+        for (int i = idx; i <= n; i++) {
+            curr.add(i);
+            backTrack(res, curr, i + 1, n, k);
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+
+// 78. Subsets
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> curr = new ArrayList<>();
+        backTrack(res, curr, nums, 0);
+        return res;
+    }
+    private void backTrack(List<List<Integer>> res, List<Integer> curr, int[] nums, int idx) {
+        res.add(new ArrayList<>(curr));
+        for (int i = idx; i < nums.length; i++) {
+            curr.add(nums[i]);
+            backTrack(res, curr, nums, i + 1);
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+
+// 79. Word Search
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    if (search(board, word, i, j, 0)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private boolean search(char[][] board, String word, int i, int j, int k) {
+        if (word.length() <= k) {
+            return true;
+        }
+        if (i < 0 || board.length <= i || j < 0 || board[0].length <= j) {
+            return false;
+        }
+        if (board[i][j] == '-' || board[i][j] != word.charAt(k)) {
+            return false;
+        }
+        char c = board[i][j];
+        board[i][j] = '-';
+        boolean res = search(board, word, i + 1, j, k + 1) ||
+            search(board, word, i - 1, j, k + 1) ||
+            search(board, word, i, j + 1, k + 1) ||
+            search(board, word, i, j - 1, k + 1);
+        board[i][j] = c;
+        return res;
+    }
+}
+
+// 80. Remove Duplicates from Sorted Array II
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int p = 2;
+        for (int i = p; i < nums.length; i++) {
+            if (nums[p - 2] != nums[i]) {
+                nums[p++] = nums[i];
+            }
+        }
+        return p;
+    }
+}
