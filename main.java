@@ -2448,3 +2448,43 @@ class Solution {
         return dummy;
     }
 }
+
+// 84. Largest Rectangle in Histogram
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length, res = 0;
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i <= n; i++) {
+            int currHeight = i == n ? 0 : heights[i];
+            while (!st.empty() && currHeight < heights[st.peek()]) {
+                int top = st.pop();
+                int width = st.isEmpty() ? i : i - st.peek() - 1;
+                int area = heights[top] * width;
+                res = Math.max(res, area);
+            }
+            st.push(i);
+        }
+        return res;
+    }
+}
+
+// 85. Maximal Rectangle
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int res = 0, m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '1') {
+                    dp[i][j] = (j == 0) ? 1 : dp[i][j - 1] + 1;
+                    int width = dp[i][j];
+                    for (int k = i; k >= 0; k--) {
+                        width = Math.min(width, dp[k][j]);
+                        res = Math.max(res, width * (i - k + 1));
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
