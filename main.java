@@ -2471,20 +2471,52 @@ class Solution {
 // 85. Maximal Rectangle
 class Solution {
     public int maximalRectangle(char[][] matrix) {
-        int res = 0, m = matrix.length, n = matrix[0].length;
+        int m = matrix.length, n = matrix[0].length, res = 0;
         int[][] dp = new int[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == '1') {
-                    dp[i][j] = (j == 0) ? 1 : dp[i][j - 1] + 1;
-                    int width = dp[i][j];
-                    for (int k = i; k >= 0; k--) {
-                        width = Math.min(width, dp[k][j]);
-                        res = Math.max(res, width * (i - k + 1));
-                    }
+                if (matrix[i][j] != '1') {
+                    continue;
+                }
+                dp[i][j] = (j == 0) ? 1 : dp[i][j - 1] + 1;
+                int width = dp[i][j];
+                for (int k = i; k >= 0; k--) {
+                    width = Math.min(width, dp[k][j]);
+                    res = Math.max(res, width * (i - k + 1));
                 }
             }
         }
         return res;
+    }
+}
+
+// 86. Partition List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode less = new ListNode(), greater = new ListNode();
+        ListNode i = less, j = greater;
+        while (head != null) {
+            if (head.val < x) {
+                i.next = head;
+                i = i.next;
+            } else {
+                j.next = head;
+                j = j.next;
+            }
+            head = head.next;
+        }
+        j.next = null;
+        i.next = greater.next;
+        return less.next;
     }
 }
