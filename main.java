@@ -2520,3 +2520,32 @@ class Solution {
         return less.next;
     }
 }
+
+// 87. Scramble String
+class Solution {
+    private final Map<String, Boolean> m = new HashMap<>();
+    public boolean isScramble(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        if (s1.equals(s2) || s2.length() == 0) {
+            return true;
+        }
+        String key = s1 + "" + s2;
+        if (m.containsKey(key)) {
+            return m.get(key);
+        }
+        boolean flag = false;
+        for (int i = 1, n = s1.length(); i < n; i++) {
+            if (isScramble(s1.substring(0, i), s2.substring(n - i)) &&
+                isScramble(s1.substring(i), s2.substring(0, n - i)) ||
+                isScramble(s1.substring(0, i), s2.substring(0, i)) &&
+                isScramble(s1.substring(i), s2.substring(i)) ) {
+                    flag = true;
+                    break;
+                }
+        }
+        m.put(key, flag);
+        return flag;
+    }
+}
