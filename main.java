@@ -2549,3 +2549,32 @@ class Solution {
         return flag;
     }
 }
+
+// 88. Merge Sorted Array
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1, j = n - 1, k = m + n - 1;
+        while (0 <= i && 0 <= j) {
+            if (nums1[i] <= nums2[j]) {
+                nums1[k] = nums2[j--];
+            } else {
+                nums1[k] = nums1[i--];
+            }
+            k--;
+        }
+        while (0 <= j) {
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+
+// 89. Gray Code
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0, target = 1 << n; i < target; i++) {
+            res.add(i ^ (i >> 1));
+        }
+        return res;
+    }
+}
