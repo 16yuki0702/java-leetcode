@@ -2578,3 +2578,59 @@ class Solution {
         return res;
     }
 }
+
+// 90. Subsets II
+class Solution {
+    private List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        backTrack(new ArrayList<Integer>(), 0, nums);
+        return res;
+    }
+    private void backTrack(List<Integer> curr, int start, int[] nums) {
+        this.res.add(new ArrayList<>(curr));
+        if (nums.length <= start) {
+            return;
+        }
+        for (int i = start; i < nums.length; i++) {
+            if (i != start && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            curr.add(nums[i]);
+            backTrack(curr, i + 1, nums);
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+
+// 91. Decode Ways
+class Solution {
+    public int numDecodings(String s) {
+        int[] dp = new int[s.length()];
+        return decode(dp, s, 0, s.length());
+    }
+    private int decode(int[] dp, String s, int start, int end) {
+        if (end <= start) {
+            return 1;
+        }
+        if (s.charAt(start) == '0') {
+            return 0;
+        }
+        if (dp[start] > 0) {
+            return dp[start];
+        }
+        int count = 0;
+        if ('1' <= s.charAt(start) && s.charAt(start) <= '9') {
+            count = decode(dp, s, start + 1, end);
+        }
+        if (start + 1 < end &&
+            (
+                (s.charAt(start) == '1' && ('0' <= s.charAt(start + 1) && s.charAt(start + 1) <= '9')) ||
+                (s.charAt(start) == '2' && ('0' <= s.charAt(start + 1) && s.charAt(start + 1) <= '6'))
+            )
+        ) {
+            count += decode(dp, s, start + 2, end);
+        }
+        return dp[start] = count;
+    }
+}
