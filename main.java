@@ -2634,3 +2634,62 @@ class Solution {
         return dp[start] = count;
     }
 }
+
+// 92. Reverse Linked List II
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode dummy = new ListNode(-1, head);
+        ListNode pre = dummy, curr = null;
+        for (int i = 0; i < left - 1; i++) {
+            pre = pre.next;
+        }
+        curr = pre.next;
+        for (int i = 0; i < right - left; i++) {
+            ListNode tmp = pre.next;
+            pre.next = curr.next;
+            curr.next = curr.next.next;
+            pre.next.next = tmp;
+        }
+        return dummy.next;
+    }
+}
+
+// 93. Restore IP Addresses
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        solve(0, 0, "", s, res);
+        return res;
+    }
+    private void solve(int i, int blk, String ans, String s, List<String> res) {
+        if (i == s.length() && blk == 4) {
+            res.add(ans.substring(0, ans.length() - 1));
+        }
+        if (i + 1 <= s.length()) {
+            solve(i + 1, blk + 1, ans + s.substring(i, i + 1) + ".", s, res);
+        }
+        if (i + 2 <= s.length() && isValid(s.substring(i, i + 2))) {
+            solve(i + 2, blk + 1, ans + s.substring(i, i + 2) + ".", s, res);
+        }
+        if (i + 3 <= s.length() && isValid(s.substring(i, i + 3))) {
+            solve(i + 3, blk + 1, ans + s.substring(i, i + 3) + ".", s, res);
+        }
+    }
+    private boolean isValid(String s) {
+        if (s.charAt(0) == '0') {
+            return false;
+        }
+        int val = Integer.parseInt(s);
+        return val <= 255;
+    }
+}
