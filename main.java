@@ -2693,3 +2693,90 @@ class Solution {
         return val <= 255;
     }
 }
+
+// 94. Binary Tree Inorder Traversal
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<Integer> res = new ArrayList<>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        inOrder(root);
+        return res;
+    }
+    private void inOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inOrder(root.left);
+        res.add(root.val);
+        inOrder(root.right);
+    }
+}
+
+// 95. Unique Binary Search Trees II
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        return generate(1, n);
+    }
+    private List<TreeNode> generate(int start, int end) {
+        if (end < start) {
+            List<TreeNode> tmp = new ArrayList<>();
+            tmp.add(null);
+            return tmp;
+        }
+        List<TreeNode> res = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> left = generate(start, i - 1);
+            List<TreeNode> right = generate(i + 1, end);
+            for (int j = 0; j < left.size(); j++) {
+                for (int k = 0; k < right.size(); k++) {
+                    res.add(new TreeNode(i, left.get(j), right.get(k)));
+                }
+            }
+        }
+        return res;
+    }
+}
+
+// 96. Unique Binary Search Trees
+class Solution {
+    public int numTrees(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                dp[i] += dp[j - 1] * dp[i - j];
+            }
+        }
+        return dp[n];
+    }
+}
