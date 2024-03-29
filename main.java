@@ -2780,3 +2780,108 @@ class Solution {
         return dp[n];
     }
 }
+
+// 97. Interleaving String
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) {
+            return false;
+        }
+        boolean[][] dp = new boolean[s1.length() + 1][];
+        for (int i = 0; i <= s1.length(); i++) {
+            dp[i] = new boolean[s2.length() + 1];
+        }
+        dp[0][0] = true;
+        for (int i = 0; i <= s1.length(); i++) {
+            for (int j = 0; j <= s2.length(); j++) {
+                if ((i < s1.length()) && (s3.charAt(i + j) == s1.charAt(i))) {
+                    dp[i + 1][j] = dp[i][j] || dp[i + 1][j];
+                }
+                if ((j < s2.length()) && (s3.charAt(i + j) == s2.charAt(j))) {
+                    dp[i][j + 1] = dp[i][j] || dp[i][j + 1];
+                }
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+}
+
+// 98. Validate Binary Search Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root, null, null);
+    }
+    private boolean isValid(TreeNode r, TreeNode min, TreeNode max) {
+        if (r == null) {
+            return true;
+        }
+        if (min != null && r.val <= min.val) {
+            return false;
+        }
+        if (max != null && max.val <= r.val) {
+            return false;
+        }
+        return isValid(r.left, min, r) && isValid(r.right, r, max);
+    }
+}
+
+// 99. Recover Binary Search Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    TreeNode prev = null, first = null, next = null;
+    public void recoverTree(TreeNode root) {
+        recover(root);
+        swap(first, next);
+    }
+    private void swap(TreeNode a, TreeNode b) {
+        if (a == null || b == null) {
+            return;
+        }
+        int tmp = a.val;
+        a.val = b.val;
+        b.val = tmp;
+    }
+    private void recover(TreeNode r) {
+        if (r == null) {
+            return;
+        }
+        recover(r.left);
+        if (prev != null && r.val < prev.val) {
+            if (first == null) {
+                first = prev;
+            }
+            next = r;
+        }
+        prev = r;
+        recover(r.right);
+    }
+}
