@@ -2985,3 +2985,113 @@ class Solution {
         level(root.right, l + 1);
     }
 }
+
+// 103. Binary Tree Zigzag Level Order Traversal
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<List<Integer>> res = new ArrayList<>(), list = new ArrayList<>();
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        traversal(root, 0);
+        for (int i = 0; i < list.size(); i++) {
+            res.add(new ArrayList<>());
+            List<Integer> tmp = list.get(i);
+            if (i % 2 == 0) {
+                for (int j = 0; j < tmp.size(); j++) {
+                    res.get(i).add(tmp.get(j));
+                }
+            } else {
+                for (int j = tmp.size() - 1; j >= 0; j--) {
+                    res.get(i).add(tmp.get(j));
+                }
+            }
+        }
+        return res;
+    }
+    private void traversal(TreeNode root, int level) {
+        if (root == null) {
+            return;
+        }
+        if (list.size() == level) {
+            list.add(new ArrayList<>());
+        }
+        list.get(level).add(root.val);
+        traversal(root.left, level + 1);
+        traversal(root.right, level + 1);
+    }
+}
+
+// 104. Maximum Depth of Binary Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+}
+
+// 105. Construct Binary Tree from Preorder and Inorder Traversal
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int idx = 0;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return build(preorder, inorder, 0, preorder.length - 1);
+    }
+    private TreeNode build(int[] preorder, int[] inorder, int l, int r) {
+        if (r < l) {
+            return null;
+        }
+        int start = l;
+        while (preorder[idx] != inorder[start]) {
+            start++;
+        }
+        idx++;
+        TreeNode t = new TreeNode(inorder[start]);
+        t.left = build(preorder, inorder, l, start - 1);
+        t.right = build(preorder, inorder, start + 1, r);
+        return t;
+    }
+}
