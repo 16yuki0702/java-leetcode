@@ -3314,3 +3314,68 @@ class Solution {
         return 1 + Math.max(minDepth(root.left), minDepth(root.right));
     }
 }
+
+// 112. Path Sum
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null && root.right == null) {
+            return root.val == targetSum;
+        }
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+    }
+}
+
+// 113. Path Sum II
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<List<Integer>> res = new ArrayList<>();
+    private List<Integer> tmp = new ArrayList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        traverse(root, targetSum);
+        return res;
+    }
+    private void traverse(TreeNode root, int target) {
+        if (root == null) {
+            return;
+        }
+        tmp.add(root.val);
+        if (root.left == null && root.right == null && root.val == target) {
+            res.add(new ArrayList<>(tmp));
+        }
+        traverse(root.left, target - root.val);
+        traverse(root.right, target - root.val);
+        tmp.remove(tmp.size() - 1);
+    }
+}
