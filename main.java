@@ -3379,3 +3379,97 @@ class Solution {
         tmp.remove(tmp.size() - 1);
     }
 }
+
+// 114. Flatten Binary Tree to Linked List
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        while (root != null) {
+            if (root.left != null) {
+                TreeNode pre = root.left;
+                while (pre.right != null) {
+                    pre = pre.right;
+                }
+                pre.right = root.right;
+                root.right = root.left;
+                root.left = null;
+            }
+            root = root.right;
+        }
+    }
+}
+
+// 115. Distinct Subsequences
+class Solution {
+    public int numDistinct(String s, String t) {
+        int m = s.length(), n = t.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int j = 0; j <= m; j++) {
+            dp[0][j] = 1;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <=  m; j++) {
+                if (t.charAt(i - 1) == s.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+                } else {
+                    dp[i][j] = dp[i][j - 1];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+}
+
+// 116. Populating Next Right Pointers in Each Node
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) {
+            return root;
+        }
+        if (root.left != null) {
+            root.left.next = root.right;
+            if (root.next != null) {
+                root.right.next = root.next.left;
+            }
+            connect(root.left);
+            connect(root.right);
+        }
+        return root;
+    }
+}
