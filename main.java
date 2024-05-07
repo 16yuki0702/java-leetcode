@@ -3473,3 +3473,95 @@ class Solution {
         return root;
     }
 }
+
+// 117. Populating Next Right Pointers in Each Node II
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) {
+            return root;
+        }
+        Node c = root, dummy = new Node(0, null, null, null);
+        for (Node p = dummy; c != null; c = c.next) {
+            if (c.left != null) {
+                p.next = c.left;
+                p = p.next;
+            }
+            if (c.right != null) {
+                p.next = c.right;
+                p = p.next;
+            }
+        }
+        connect(dummy.next);
+        dummy.next = null;
+        return root;
+    }
+}
+
+// 118. Pascal's Triangle
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows == 0) {
+            return res;
+        }
+        List<Integer> first = new ArrayList<>();
+        first.add(1);
+        res.add(first);
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> pre = res.get(i - 1);
+            List<Integer> curr = new ArrayList<>();
+            curr.add(1);
+            for (int j = 1; j < i; j++) {
+                curr.add(pre.get(j - 1) + pre.get(j));
+            }
+            curr.add(1);
+            res.add(curr);
+        }
+        return res;
+    }
+}
+
+// 119. Pascal's Triangle II
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i <= rowIndex; i++) {
+            List<Integer> tmp = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                if (i == 0 || i == 1) {
+                    tmp.add(1);
+                } else {
+                    if (j == 0 || j == i) {
+                        tmp.add(1);
+                    } else {
+                        tmp.add(res.get(j - 1) + res.get(j));
+                    }
+                }
+            }
+            res = tmp;
+        }
+        return res;
+    }
+}
