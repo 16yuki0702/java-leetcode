@@ -3565,3 +3565,31 @@ class Solution {
         return res;
     }
 }
+
+// 120. Triangle
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle.size() == 1) {
+            return triangle.get(0).get(0);
+        }
+        for (int i = triangle.size() - 2; i >= 0; i--) {
+            for (int j = 0; j < triangle.get(i).size(); j++) {
+                triangle.get(i).set(j, triangle.get(i).get(j) +
+                    Math.min(triangle.get(i + 1).get(j), triangle.get(i + 1).get(j + 1)));
+            }
+        }
+        return triangle.get(0).get(0);
+    }
+}
+
+// 121. Best Time to Buy and Sell Stock
+class Solution {
+    public int maxProfit(int[] prices) {
+        int minP = Integer.MAX_VALUE, res = Integer.MIN_VALUE;
+        for (int p : prices) {
+            minP = Math.min(minP, p);
+            res = Math.max(res, p - minP);
+        }
+        return res;
+    }
+}
