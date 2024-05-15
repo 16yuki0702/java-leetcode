@@ -3593,3 +3593,70 @@ class Solution {
         return res;
     }
 }
+
+// 122. Best Time to Buy and Sell Stock II
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy = 0, sell = 0, res = 0, n = prices.length;
+        while (buy < n && sell < n) {
+            while (buy + 1 < n && prices[buy] > prices[buy + 1]) {
+                buy++;
+            }
+            sell = buy;
+            while (sell + 1 < n && prices[sell] < prices[sell + 1]) {
+                sell++;
+            }
+            res += prices[sell] - prices[buy];
+            buy = sell + 1;
+        }
+        return res;
+    }
+}
+
+// 123. Best Time to Buy and Sell Stock III
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy1 = Integer.MIN_VALUE, buy2 = Integer.MIN_VALUE, sell1 = 0, sell2 = 0;
+        for (int i = 0; i < prices.length; i++) {
+            buy1 = Math.max(buy1, -prices[i]);
+            sell1 = Math.max(sell1, buy1 + prices[i]);
+            buy2 = Math.max(buy2, sell1 - prices[i]);
+            sell2 = Math.max(sell2, buy2 + prices[i]);
+        }
+        return sell2;
+    }
+}
+
+// 124. Binary Tree Maximum Path Sum
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int res = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return res;
+    }
+    private int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = Math.max(dfs(root.left), 0);
+        int right = Math.max(dfs(root.right), 0);
+        int sum = root.val + left + right;
+        res = Math.max(res, sum);
+        return root.val + Math.max(left, right);
+    }
+}
