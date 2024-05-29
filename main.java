@@ -3660,3 +3660,105 @@ class Solution {
         return root.val + Math.max(left, right);
     }
 }
+
+// 125. Valid Palindrome
+class Solution {
+    public boolean isPalindrome(String s) {
+        s = s.toLowerCase();
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            while (l < r && !isAlpha(s.charAt(l))) {
+                l++;
+            }
+            while (l < r && !isAlpha(s.charAt(r))) {
+                r--;
+            }
+            if (l < r && s.charAt(l) != s.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+    private boolean isAlpha(char c) {
+        return (48 <= c && c <= 57)
+            || (65 <= c && c <= 90)
+            || (97 <= c && c <= 122);
+    }
+}
+
+// 126. Word Ladder II
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        Map<String, Set<String>> reverse = new HashMap<>();
+        Set<String> wordSet = new HashSet<>(wordList);
+        Set<String> nextLevel = new HashSet<>();
+        wordSet.remove(beginWord);
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+        boolean isEnd = false;
+        while (!q.isEmpty()) {
+            String w = q.remove();
+            for (String next : wordSet) {
+                if (isLadder(w, next)) {
+                    Set<String> reverseLadders = reverse.computeIfAbsent(next, k -> new HashSet<>());
+                    reverseLadders.add(w);
+                    if (endWord.equals(next)) {
+                        isEnd = true;
+                    }
+                    nextLevel.add(next);
+                }
+            }
+            if (q.isEmpty()) {
+                if (isEnd) {
+                    break;
+                }
+                q.addAll(nextLevel);
+                wordSet.removeAll(nextLevel);
+                nextLevel.clear();
+            }
+        }
+        if (!isEnd) {
+            return res;
+        }
+        Set<String> path = new LinkedHashSet<>();
+        path.add(endWord);
+        findPath(endWord, beginWord, reverse, res, path);
+        return res;
+    }
+    private void findPath(String endWord, String beginWord, Map<String, Set<String>> graph,
+        List<List<String>> res, Set<String> path) {
+        Set<String> next = graph.get(endWord);
+        if (next == null) {
+            return;
+        }
+        for (String word : next) {
+            path.add(word);
+            if (beginWord.equals(word)) {
+                List<String> shortestPath = new ArrayList<>(path);
+                Collections.reverse(shortestPath);
+                res.add(shortestPath);
+            } else {
+                findPath(word, beginWord, graph, res, path);
+            }
+            path.remove(word);
+        }
+    }
+    private boolean isLadder(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int diffCount = 0, n = s.length();
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) != t.charAt(i)) {
+                diffCount++;
+            }
+            if (diffCount > 1) {
+                return false;
+            }
+        }
+        return diffCount == 1;
+    }
+}
