@@ -3762,3 +3762,46 @@ class Solution {
         return diffCount == 1;
     }
 }
+
+// 127. Word Ladder
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
+        Set<String> forwardSet = new HashSet<>(), backwardSet = new HashSet<>();
+        forwardSet.add(beginWord);
+        backwardSet.add(endWord);
+        wordSet.remove(beginWord);
+        wordSet.remove(endWord);
+        return transform(forwardSet, backwardSet, wordSet);
+    }
+    private int transform(Set<String> forwardSet, Set<String> backwardSet, Set<String> wordSet) {
+        Set<String> newSet = new HashSet<>();
+        for (String fs : forwardSet) {
+            char[] wordArray = fs.toCharArray();
+            for (int i = 0; i < wordArray.length; i++) {
+                for (char c = 'a'; c <= 'z'; c++) {
+                    char old = wordArray[i];
+                    wordArray[i] = c;
+                    String target = String.valueOf(wordArray);
+                    if (backwardSet.contains(target)) {
+                        return 2;
+                    } else if (wordSet.contains(target) && !forwardSet.contains(target)) {
+                        wordSet.remove(target);
+                        newSet.add(target);
+                    }
+                    wordArray[i] = old;
+                }
+            }
+        }
+        if (newSet.size() == 0) {
+            return 0;
+        }
+        forwardSet = newSet;
+        int result = forwardSet.size() > backwardSet.size() ? 
+            transform(backwardSet, forwardSet, wordSet) : transform(forwardSet, backwardSet, wordSet);
+            return result == 0 ? 0 : result + 1;
+    }
+}
