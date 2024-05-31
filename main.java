@@ -3805,3 +3805,23 @@ class Solution {
             return result == 0 ? 0 : result + 1;
     }
 }
+
+// 128. Longest Consecutive Sequence
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = Arrays.stream(nums).boxed().collect(Collectors.toSet());
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (set.contains(nums[i] - 1)) {
+                continue;
+            }
+            int curr = nums[i], len = 0;
+            while (set.contains(curr)) {
+                curr++;
+                len++;
+            }
+            res = Math.max(res, len);
+        }
+        return res;
+    }
+}
