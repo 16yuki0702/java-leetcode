@@ -3861,3 +3861,39 @@ class Solution {
         recursive(root.right, curr);
     }
 }
+
+// 130. Surrounded Regions
+class Solution {
+    public void solve(char[][] board) {
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == 'O' &&
+                    (i == 0 || j == 0 || i == m - 1 || j == n - 1)) {
+                        dfs(board, i, j, m, n);
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                } else if (board[i][j] == 'V') {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+    private void dfs(char[][] b, int i, int j, int m, int n) {
+        if (i < 0 || m <= i || j < 0 || n <= j) {
+            return;
+        }
+        if (b[i][j] == 'O') {
+            b[i][j] = 'V';
+            dfs(b, i + 1, j, m, n);
+            dfs(b, i - 1, j, m, n);
+            dfs(b, i, j + 1, m, n);
+            dfs(b, i, j - 1, m, n);
+        }
+    }
+}
