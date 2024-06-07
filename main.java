@@ -3897,3 +3897,38 @@ class Solution {
         }
     }
 }
+
+// 131. Palindrome Partitioning
+class Solution {
+    private List<List<String>> res = new ArrayList<>();
+    private List<String> path = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+        backTrack(0, s);
+        return res;
+    }
+    private void backTrack(int start, String s) {
+        if (start == s.length()) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int end = start + 1; end <= s.length(); end++) {
+            String substr = s.substring(start, end);
+            if (isPalindrome(substr)) {
+                path.add(substr);
+                backTrack(end, s);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    private boolean isPalindrome(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+}
