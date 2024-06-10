@@ -3932,3 +3932,31 @@ class Solution {
         return true;
     }
 }
+
+// 132. Palindrome Partitioning II
+class Solution {
+    public int minCut(String s) {
+        int[] dp = new int[s.length()];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            dp[i] = isPalindrome(s, 0, i) ? 0 : dp[i - 1] + 1;
+            for (int j = i; 0 < j; j--) {
+                if (dp[i] == 1) {
+                    break;
+                }
+                dp[i] = isPalindrome(s, j, i) ? Math.min(dp[i], dp[j - 1] + 1) : dp[i];
+            }
+        }
+        return dp[s.length() - 1];
+    }
+    private boolean isPalindrome(String s, int l, int r) {
+        while (l < r) {
+            if (s.charAt(l++) != s.charAt(r--)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
