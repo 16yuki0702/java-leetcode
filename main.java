@@ -3999,3 +3999,19 @@ class Solution {
         return n;
     }
 }
+
+// 134. Gas Station
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int sum = 0, total = 0, res = 0;
+        for (int i = 0; i < gas.length; i++) {
+            sum += gas[i] - cost[i];
+            total += gas[i] - cost[i];
+            if (sum < 0) {
+                res = i + 1;
+                sum = 0;
+            }
+        }
+        return 0 <= total ? res : -1;
+    }
+}
