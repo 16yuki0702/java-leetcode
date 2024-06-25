@@ -4053,3 +4053,22 @@ class Solution {
         return res;
     }
 }
+
+// 137. Single Number II
+class Solution {
+    public int singleNumber(int[] nums) {
+        int n = nums.length, p = 0, t = 0;
+        long res = 0;
+        for (int i = 0; i < 32; i++) {
+            t = 0;
+            for (int j = 0; j < n; j++) {
+                t += nums[j] & 1;
+                nums[j] >>= 1;
+            }
+            t %= 3;
+            res = res + (long)(t * Math.pow(2, p));
+            p++;
+        }
+        return (int)res;
+    }
+}
