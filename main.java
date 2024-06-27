@@ -4072,3 +4072,36 @@ class Solution {
         return (int)res;
     }
 }
+
+// 138. Copy List with Random Pointer
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+class Solution {
+    private Map<Node, Node> m = new HashMap<>();
+    public Node copyRandomList(Node head) {
+        Node p = head;
+        while (p != null) {
+            m.put(p, new Node(p.val));
+            p = p.next;
+        }
+        p = head;
+        while (p != null) {
+            m.get(p).next = m.get(p.next);
+            m.get(p).random = m.get(p.random);
+            p = p.next;
+        }
+        return m.get(head);
+    }
+}
