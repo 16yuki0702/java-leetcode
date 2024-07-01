@@ -4105,3 +4105,24 @@ class Solution {
         return m.get(head);
     }
 }
+
+// 139. Word Break
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 0; i <= s.length(); i++) {
+            if (!dp[i]) {
+                continue;
+            }
+            for (String w : wordDict) {
+                int len = s.length() <= i + w.length() ? s.length() : i + w.length();
+                String tmp = s.substring(i, len);
+                if (tmp.equals(w)) {
+                    dp[i + tmp.length()] = true;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+}
