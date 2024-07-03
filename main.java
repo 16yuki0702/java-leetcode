@@ -4126,3 +4126,31 @@ class Solution {
         return dp[s.length()];
     }
 }
+
+// 140. Word Break II
+class Solution {
+    List<String> res = new ArrayList<>();
+    Set<String> dict = new HashSet<>();
+    StringBuilder curr = new StringBuilder();
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        for (String word : wordDict) {
+            dict.add(word);
+        }
+        backTrack(s, 0);
+        return res;
+    }
+    private void backTrack(String s, int start) {
+        if (s.length() == start) {
+            res.add(curr.toString().trim());
+        }
+        for (int i = start; i < s.length(); i++) {
+            if (dict.contains(s.substring(start, i + 1))) {
+                int len = curr.length();
+                curr.append(s.substring(start, i + 1));
+                curr.append(" ");
+                backTrack(s, i + 1);
+                curr.setLength(len);
+            }
+        }
+    }
+}
