@@ -4385,10 +4385,42 @@ class LRUCache {
         }
     }
 }
-
 /**
  * Your LRUCache object will be instantiated and called as such:
  * LRUCache obj = new LRUCache(capacity);
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+
+// 147. Insertion Sort List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode pre = dummy, curr = head;
+        while (curr != null) {
+            if (curr.next != null && curr.next.val < curr.val) {
+                while (pre.next != null && pre.next.val < curr.next.val) {
+                    pre = pre.next;
+                }
+                ListNode tmp = pre.next;
+                pre.next = curr.next;
+                curr.next = curr.next.next;
+                pre.next.next = tmp;
+                pre = dummy;
+            } else {
+                curr = curr.next;
+            }
+        }
+        return dummy.next;
+    }
+}
