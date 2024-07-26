@@ -4474,3 +4474,39 @@ class Solution {
         return dummy.next;
     }
 }
+
+// 149. Max Points on a Line
+class Solution {
+    public int maxPoints(int[][] points) {
+        int maxp = 0, coordinates = points.length;
+        if (coordinates < 3) {
+            return coordinates;
+        }
+        for (int i = coordinates - 1; 0 < i; i--) {
+            int x = points[i][0];
+            int y = points[i][1];
+            Map<Double, Integer> m = new HashMap<>();
+            for (int j = i + 1; j < coordinates; j++) {
+                double dx = points[j][0] - x;
+                double dy = points[j][1] - y;
+                if (dx != 0) {
+                    m.merge(dy / dx, 1, Integer::sum);
+                } else {
+                    m.merge(Double.MAX_VALUE, 1, Integer::sum);
+                }
+            }
+            for (int k = i - 1; 0 <= k; k--) {
+                double dx = x - points[k][0];
+                double dy = y - points[k][1];
+                if (dx != 0) {
+                    m.merge(dy / dx, 1, Integer::sum);
+                } else {
+                    m.merge(Double.MAX_VALUE, 1, Integer::sum);
+                }
+            }
+            maxp = Collections.max(m.values()) + 1 > maxp ?
+                    Collections.max(m.values()) + 1 : maxp;
+        }
+        return maxp;
+    }
+}
