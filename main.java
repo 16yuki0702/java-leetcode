@@ -4510,3 +4510,75 @@ class Solution {
         return maxp;
     }
 }
+
+// 150. Evaluate Reverse Polish Notation
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st = new Stack<>();
+        for (String t : tokens) {
+            if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
+                int n2 = Integer.valueOf(st.pop());
+                int n1 = Integer.valueOf(st.pop());
+                if (t.equals("+")) {
+                    st.push(n1 + n2);
+                } else if (t.equals("-")) {
+                    st.push(n1 - n2);
+                } else if (t.equals("*")) {
+                    st.push(n1 * n2);
+                } else if (t.equals("/")) {
+                    st.push(n1 / n2);
+                }
+            } else {
+                st.push(Integer.valueOf(t));
+            }
+        }
+        return st.pop();
+    }
+}
+
+// 151. Reverse Words in a String
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder res = new StringBuilder(), tmp = new StringBuilder();
+        for (int i = s.length() - 1; 0 <= i; i--) {
+            if (s.charAt(i) == ' ') {
+                if (0 < tmp.length()) {
+                    if (0 < res.length()) {
+                        res.append(' ');
+                    }
+                    res.append(tmp.reverse().toString());
+                    tmp.setLength(0);
+                }
+                continue;
+            }
+            tmp.append(s.charAt(i));
+        }
+        if (0 < tmp.length()) {
+            if (0 < res.length()) {
+                res.append(' ');
+            }
+            res.append(tmp.reverse().toString());
+        }
+        return res.toString();
+    }
+}
+
+// 152. Maximum Product Subarray
+class Solution {
+    public int maxProduct(int[] nums) {
+        double left = 1, right = 1;
+        double res = nums[0];
+        for (int l = 0, r = nums.length - 1; l < nums.length; l++, r--) {
+            if (left == 0) {
+                left = 1;
+            }
+            if (right == 0) {
+                right = 1;
+            }
+            left *= nums[l];
+            right *= nums[r];
+            res = Math.max(res, Math.max(left, right));
+        }
+        return (int)res;
+    }
+}
