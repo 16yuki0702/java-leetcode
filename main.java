@@ -4601,3 +4601,57 @@ class Solution {
         return nums[r];
     }
 }
+
+// 154. Find Minimum in Rotated Sorted Array II
+class Solution {
+    public int findMin(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] > nums[r]) {
+                l = m + 1;
+            } else if (nums[m] < nums[r]) {
+                r = m;
+            } else {
+                r--;
+            }
+        }
+        return nums[l];
+    }
+}
+
+// 155. Min Stack
+class MinStack {
+    Stack<Pair<Integer, Integer>> stack;
+    public MinStack() {
+        this.stack = new Stack<>();
+    }
+    public void push(int val) {
+        if (0 < stack.size()) {
+            if (this.stack.peek().getValue() < val) {
+                this.stack.push(new Pair(val, this.stack.peek().getValue()));
+            } else {
+                this.stack.push(new Pair(val, val));
+            }
+        } else {
+            this.stack.push(new Pair(val, val));
+        }
+    }
+    public void pop() {
+        this.stack.pop();
+    }
+    public int top() {
+        return this.stack.peek().getKey();
+    }
+    public int getMin() {
+        return this.stack.peek().getValue();
+    }
+}
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(val);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
