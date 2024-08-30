@@ -4655,3 +4655,26 @@ class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
  */
+
+// 160. Intersection of Two Linked Lists
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode t1 = headA, t2 = headB;
+        while (t1 != t2) {
+            t1 = t1 == null ? headB : t1.next;
+            t2 = t2 == null ? headA : t2.next;
+        }
+        return t1;
+    }
+}
