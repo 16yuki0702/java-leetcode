@@ -4678,3 +4678,20 @@ public class Solution {
         return t1;
     }
 }
+
+// 162. Find Peak Element
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            int mr = m + 1;
+            if (nums[m] < nums[mr]) {
+                l = mr;
+            } else {
+                r = m;
+            }
+        }
+        return l;
+    }
+}
