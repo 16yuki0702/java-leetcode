@@ -4695,3 +4695,38 @@ class Solution {
         return l;
     }
 }
+
+// 164. Maximum Gap
+class Solution {
+    public int maximumGap(int[] nums) {
+        if (nums.length < 2) {
+            return 0;
+        }
+        int high = 0, low = Integer.MAX_VALUE, res = 0;
+        for (int n : nums) {
+            high = Math.max(high, n);
+            low = Math.min(low, n);
+        }
+        int bsize = Math.max((high - low) / (nums.length - 1), 1);
+        List<List<Integer>> bucket = new ArrayList<>();
+        for (int i = (high - low) / bsize; 0 <= i; i--) {
+            bucket.add(new ArrayList<>());
+        }
+        for (int n : nums) {
+            bucket.get((n - low) / bsize).add(n);
+        }
+        int currhi = 0;
+        for (List<Integer> b : bucket) {
+            if (b.isEmpty()) {
+                continue;
+            }
+            int prev = currhi > 0 ? currhi : b.get(0), currlo = b.get(0);
+            for (int n : b) {
+                currhi = Math.max(currhi, n);
+                currlo = Math.min(currlo, n);
+            }
+            res = Math.max(res, currlo - prev);
+        }
+        return res;
+    }
+}
