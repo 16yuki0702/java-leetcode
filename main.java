@@ -4730,3 +4730,29 @@ class Solution {
         return res;
     }
 }
+
+// 165. Compare Version Numbers
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        int i = 0, j = 0;
+        int t1 = 0, t2 = 0;
+        while (i < version1.length() || j < version2.length()) {
+            while (i < version1.length() && version1.charAt(i) != '.') {
+                t1 = (t1 * 10) + (version1.charAt(i++) - '0');
+            }
+            while (j < version2.length() && version2.charAt(j) != '.') {
+                t2 = (t2 * 10) + (version2.charAt(j++) - '0');
+            }
+            if (t1 < t2) {
+                return -1;
+            } else if (t1 > t2) {
+                return 1;
+            }
+            i++;
+            j++;
+            t1 = 0;
+            t2 = 0;
+        }
+        return 0;
+    }
+}
