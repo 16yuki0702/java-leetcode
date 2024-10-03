@@ -4756,3 +4756,37 @@ class Solution {
         return 0;
     }
 }
+
+// 166. Fraction to Recurring Decimal
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) {
+            return "0";
+        }
+        StringBuilder res = new StringBuilder();
+        if (numerator < 0 ^ denominator < 0) {
+            res.append("-");
+        }
+        long num = Math.abs((long)numerator);
+        long denom = Math.abs((long)denominator);
+        long remainder = num % denom;
+        res.append(num / denom);
+        if (remainder == 0) {
+            return res.toString();
+        }
+        res.append(".");
+        HashMap<Long, Integer> m = new HashMap<>();
+        while (remainder != 0) {
+            if (m.containsKey(remainder)) {
+                res.insert(m.get(remainder), "(");
+                res.append(")");
+                break;
+            }
+            m.put(remainder, res.length());
+            remainder *= 10;
+            res.append(remainder / denom);
+            remainder %= denom;
+        }
+        return res.toString();
+    }
+}
