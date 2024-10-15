@@ -4819,3 +4819,17 @@ class Solution {
         return res.reverse().toString();
     }
 }
+
+// 169. Majority Element
+class Solution {
+    public int majorityElement(int[] nums) {
+        int curr = -1, count = 0;
+        for (int n : nums) {
+            if (count == 0) {
+                curr = n;
+            }
+            count += curr == n ? 1 : -1;
+        }
+        return curr;
+    }
+}
