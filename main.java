@@ -4833,3 +4833,14 @@ class Solution {
         return curr;
     }
 }
+
+// 171. Excel Sheet Column Number
+class Solution {
+    public int titleToNumber(String columnTitle) {
+        long res = 0, digit = 1;
+        for (int i = columnTitle.length() - 1; i >= 0; i--, digit *= 26) {
+            res += ((int)(columnTitle.charAt(i) - 'A') + 1) * digit;
+        }
+        return (int)res;
+    }
+}
