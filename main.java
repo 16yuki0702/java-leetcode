@@ -4844,3 +4844,16 @@ class Solution {
         return (int)res;
     }
 }
+
+// 172. Factorial Trailing Zeroes
+class Solution {
+    public int trailingZeroes(int n) {
+        long res = 0, d = 5;
+        while (n > 0) {
+            res += n / 5;
+            d *= 5;
+            n /= 5;
+        }
+        return (int)res;
+    }
+}
