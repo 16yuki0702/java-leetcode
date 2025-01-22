@@ -5164,3 +5164,29 @@ class Solution {
         return fake.next;
     }
 }
+
+// 204. Count Primes
+class Solution {
+    public int countPrimes(int n) {
+        if (n <= 2) {
+            return 0;
+        }
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+        for (int p = 2; p * p < n; p++) {
+            if (isPrime[p]) {
+                for (int mul = p * p; mul < n; mul += p) {
+                    isPrime[mul] = false;
+                }
+            }
+        }
+        int count = 0;
+        for (boolean p : isPrime) {
+            if (p) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
