@@ -5233,3 +5233,41 @@ class Solution {
         return prev;
     }
 }
+
+// 207. Course Schedule
+class Solution {
+    private ArrayList<Integer>[] adjacent;
+    private int[] visited;
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        this.adjacent = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            adjacent[i] = new ArrayList<>();
+        }
+        for (int[] pre : prerequisites) {
+            adjacent[pre[0]].add(pre[1]);
+        }
+        this.visited = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean dfs(int node) {
+        if (this.visited[node] == 1) {
+            return false;
+        }
+        if (this.visited[node] == 2) {
+            return true;
+        }
+        this.visited[node] = 1;
+        for (int n : this.adjacent[node]) {
+            if (!dfs(n)) {
+                return false;
+            }
+        }
+        this.visited[node] = 2;
+        return true;
+    }
+}
