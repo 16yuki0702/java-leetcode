@@ -5342,3 +5342,18 @@ class Trie {
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
+
+// 209. Minimum Size Subarray Sum
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int l = 0, r = 0, sum = 0, res = Integer.MAX_VALUE;
+        while (r < nums.length) {
+            sum += nums[r++];
+            while (target <= sum) {
+                res = Math.min(res, r - l);
+                sum -= nums[l++];
+            }
+        }
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
+}
