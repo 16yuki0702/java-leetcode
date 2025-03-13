@@ -5357,3 +5357,46 @@ class Solution {
         return res == Integer.MAX_VALUE ? 0 : res;
     }
 }
+
+// 210. Course Schedule II
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] sortedOrder = new int[numCourses];
+        int idx = 0;
+        if (numCourses <= 0) {
+            return new int[0];
+        }
+        Map<Integer, Integer> inDegree = new HashMap<>();
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            inDegree.put(i, 0);
+            graph.put(i, new ArrayList<Integer>());
+        }
+        for (int i = 0; i < prerequisites.length; i++) {
+            int parent = prerequisites[i][1], child = prerequisites[i][0];
+            graph.get(parent).add(child);
+            inDegree.put(child, inDegree.get(child) + 1);
+        }
+        Queue<Integer> sources = new LinkedList<>();
+        for (Map.Entry<Integer, Integer> entry : inDegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                sources.add(entry.getKey());
+            }
+        }
+        while (!sources.isEmpty()) {
+            int vertex = sources.poll();
+            sortedOrder[idx++] = vertex;
+            List<Integer> children = graph.get(vertex);
+            for (int child : children) {
+                inDegree.put(child, inDegree.get(child) - 1);
+                if (inDegree.get(child) == 0) {
+                    sources.add(child);
+                }
+            }
+        }
+        if (idx != numCourses) {
+            return new int[0];
+        }
+        return sortedOrder;
+    }
+}
