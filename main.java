@@ -5555,3 +5555,40 @@ class Solution {
         return pi[newString.length() - 1];
     }
 }
+
+// 215. Kth Largest Element in an Array
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+    }
+    private int quickSelect(int[] nums, int left, int right, int target) {
+        if (left == right) {
+            return nums[left];
+        }
+        int pivot = nums[left];
+        int low = left;
+        int high = right;
+        while (low <= high) {
+            while (low <= high && nums[low] < pivot) {
+                low++;
+            }
+            while (low <= high && nums[high] > pivot) {
+                high--;
+            }
+            if (low <= high) {
+                int tmp = nums[low];
+                nums[low] = nums[high];
+                nums[high] = tmp;
+                low++;
+                high--;
+            }
+        }
+        if (target <= high) {
+            return quickSelect(nums, left, high, target);
+        } else if (low <= target) {
+            return quickSelect(nums, low, right, target);
+        } else {
+            return nums[target];
+        }
+    }
+ }
