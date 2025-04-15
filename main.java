@@ -5592,3 +5592,25 @@ class Solution {
         }
     }
  }
+
+// 216. Combination Sum III
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> result = new ArrayList<>();
+        backTrack(1, k, n, new ArrayList<>(), result);
+        return result;
+    }
+    private void backTrack(int start, int k, int target, List<Integer> current, List<List<Integer>> result) {
+        if (k == 0 && target == 0) {
+            result.add(new ArrayList<>(current));
+        }
+        for (int i = start; i <= 9; i++) {
+            if (target < i) {
+                break;
+            }
+            current.add(i);
+            backTrack(i + 1, k - 1, target - i, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+}
