@@ -5625,3 +5625,101 @@ class Solution {
         return s.size() < nums.length;
     }
 }
+
+// 218. The Skyline Problem
+class SegmentTree {
+    int[] range;
+    int height;
+    SegmentTree left;
+    SegmentTree right;
+    public SegmentTree(int low, int high) {
+        this.range = new int[]{low, high};
+        this.height = 0;
+        if (low == high) {
+            this.left = null;
+            this.right = null;
+            return;
+        }
+        int mid = low + (high - low) / 2;
+        this.left = new SegmentTree(low, mid);
+        this.right = new SegmentTree(mid + 1, high);
+    }
+    public void update(int low, int high, int height) {
+        if (high < this.range[0] || this.range[1] < low) {
+            return;
+        }
+        if (this.range[0] == this.range[1]) {
+            this.height = Math.max(this.height, height);
+            return;
+        }
+        if (height < this.height) {
+            return;
+        }
+        if (this.left != null) {
+            this.left.update(low, high, height);
+        }
+        if (this.right != null) {
+            this.right.update(low, high, height);
+        }
+        this.height = Math.min(this.left.height, this.right.height);
+    }
+    public int get(int index) {
+        if (this.range[0] == this.range[1]) {
+            return this.height;
+        }
+        int result = 0;
+        int mid = this.range[0] + (this.range[1] - this.range[0]) / 2;
+        if (index <= mid) {
+            result = this.left.get(index);
+        } else {
+            result = this.right.get(index);
+        }
+        return result;
+    }
+}
+
+class Solution {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        TreeSet<Integer> treeset = new TreeSet<>();
+        for (int[] building : buildings) {
+            treeset.add(building[0]);
+            treeset.add(building[1]);
+        }
+        Map<Integer, Integer> positionToIndex = new HashMap<>();
+        Map<Integer, Integer> indexToPosition = new HashMap<>();
+        int currIndex = 0;
+        for (int position : treeset) {
+            positionToIndex.put(position, currIndex);
+            indexToPosition.put(currIndex, position);
+            currIndex++;
+        }
+        int numOfPositions = treeset.size();
+        SegmentTree segmentTree = new SegmentTree(0, numOfPositions - 1);
+
+        Arrays.sort(buildings, (a, b) -> b[2] - a[2]);
+        for (int[] building : buildings) {
+            int left = building[0];
+            int right = building[1];
+            int height = building[2];
+            int leftIndex = positionToIndex.get(left);
+            int rightIndex = positionToIndex.get(right);
+            segmentTree.update(leftIndex, rightIndex - 1, height);
+        }
+
+        List<List<Integer>> result = new LinkedList<>();
+        int currHeight = 0;
+        for (int index = 0; index < numOfPositions; index++) {
+            int indexPosition = indexToPosition.get(index);
+            int height = segmentTree.get(index);
+            if (currHeight == height) {
+                continue;
+            }
+            List<Integer> position = new ArrayList<>();
+            position.add(indexPosition);
+            position.add(height);
+            result.add(position);
+            currHeight = height;
+        }
+        return result;
+    }
+}
