@@ -6030,3 +6030,41 @@ class Solution {
         return res;
     }
 }
+
+// 230. Kth Smallest Element in a BST
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int result = 0;
+    private int count = 0;
+    public int kthSmallest(TreeNode root, int k) {
+        this.count = k;
+        recursive(root);
+        return this.result;
+    }
+    private void recursive(TreeNode n) {
+        if (n == null || this.count == 0) {
+            return;
+        }
+        recursive(n.left);
+        this.count--;
+        if (this.count == 0) {
+            this.result = n.val;
+            return;
+        }
+        recursive(n.right);
+    }
+}
