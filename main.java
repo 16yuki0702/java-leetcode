@@ -6171,3 +6171,30 @@ class Solution {
         return true;
     }
 }
+
+// 235. Lowest Common Ancestor of a Binary Search Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int small = Math.min(p.val, q.val);
+        int larget = Math.max(p.val, q.val);
+        while (root != null) {
+            if (root.val > larget) {
+                root = root.left;
+            } else if (root.val < small) {
+                root = root.right;
+            } else {
+                return root;
+            }
+        }
+        return null;
+    }
+}
