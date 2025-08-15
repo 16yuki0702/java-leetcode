@@ -6458,3 +6458,18 @@ class Solution {
         return res[n - 1];
     }
 }
+
+// 268. Missing Number
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int res = 0;
+        for (int i = 1; i <= n; i++) {
+            res = res ^ i;
+        }
+        for (int i = 0; i < n; i++) {
+            res = res ^ nums[i];
+        }
+        return res;
+    }
+}
