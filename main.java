@@ -6754,3 +6754,34 @@ class Solution {
         return lives;
     }
 }
+
+// 290. Word Pattern
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String[] words = s.split(" ");
+        if (pattern.length() != words.length) {
+            return false;
+        }
+        HashMap<Character, String> mCharToWord = new HashMap<>();
+        HashMap<String, Character> mWordToChar = new HashMap<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            String word = words[i];
+            if (mCharToWord.containsKey(c)) {
+                if (!mCharToWord.get(c).equals(word)) {
+                    return false;
+                }
+            } else {
+                mCharToWord.put(c, word);
+            }
+            if (mWordToChar.containsKey(word)) {
+                if (mWordToChar.get(word) != c) {
+                    return false;
+                }
+            } else {
+                mWordToChar.put(word, c);
+            }
+        }
+        return true;
+    }
+}
