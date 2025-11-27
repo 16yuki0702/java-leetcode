@@ -7069,3 +7069,49 @@ class Solution {
         return true;
     }
 }
+
+// 307. Range Sum Query - Mutable
+class NumArray {
+    int[] arr;
+    int[] BIT;
+    int n;
+    public NumArray(int[] nums) {
+        this.arr = nums;
+        this.n = nums.length;
+        this.BIT = new int[this.n + 1];
+        for (int i = 0; i < this.n; i++) {
+            init(i, this.arr[i]);
+        }
+    }
+    public void update(int index, int val) {
+        int diff = val - this.arr[index];
+        this.arr[index] = val;
+        init(index, diff);
+    }
+    public int sumRange(int i, int j) {
+        return getSum(j) - getSum(i - 1);
+    }
+    private int getSum(int i) {
+        int sum = 0;
+        i++;
+        while (i > 0) {
+            sum += this.BIT[i];
+            i -= (i & -i);
+        }
+        return sum;
+    }
+    private void init(int i, int val) {
+        i++;
+        while (i <= this.n) {
+            this.BIT[i] += val;
+            i += (i & -i);
+        }
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
