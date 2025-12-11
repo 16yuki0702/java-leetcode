@@ -7108,10 +7108,23 @@ class NumArray {
         }
     }
 }
-
 /**
  * Your NumArray object will be instantiated and called as such:
  * NumArray obj = new NumArray(nums);
  * obj.update(index,val);
  * int param_2 = obj.sumRange(left,right);
  */
+
+// 309. Best Time to Buy and Sell Stock with Cooldown
+class Solution {
+    public int maxProfit(int[] prices) {
+        int sell = 0, prev_sell = 0, buy = Integer.MIN_VALUE, prev_buy = 0;
+        for (int price : prices) {
+            prev_buy = buy;
+            buy = Math.max(prev_sell - price, prev_buy);
+            prev_sell = sell;
+            sell = Math.max(prev_buy + price, prev_sell);
+        }
+        return sell;
+    }
+}
