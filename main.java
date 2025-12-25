@@ -7228,3 +7228,31 @@ class Solution {
         }
     }
 }
+
+// 315. Count of Smaller Numbers After Self
+class Solution {
+    List<Integer> list = new ArrayList<>();
+    List<Integer> sorted = new ArrayList<>();
+    public List<Integer> countSmaller(int[] nums) {
+        for (int i = nums.length - 1; 0 <= i; i--) {
+            int idx = insert(nums[i]);
+            list.add(idx);
+            sorted.add(idx, nums[i]);
+        }
+        Collections.reverse(list);
+        return list;
+    }
+    private int insert(int num) {
+        int l = 0;
+        int r = sorted.size() - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (sorted.get(mid) < num) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+}
