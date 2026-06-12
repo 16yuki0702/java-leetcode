@@ -7802,3 +7802,13 @@ public class NestedIterator implements Iterator<Integer> {
  * NestedIterator i = new NestedIterator(nestedList);
  * while (i.hasNext()) v[f()] = i.next();
  */
+
+// 342. Power of Four
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        return Math.log(n) / Math.log(4) % 1 == 0;
+    }
+}
