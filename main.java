@@ -7812,3 +7812,26 @@ class Solution {
         return Math.log(n) / Math.log(4) % 1 == 0;
     }
 }
+
+// 343. Integer Break
+class Solution {
+    public int integerBreak(int n) {
+        if (n == 2) {
+            return 1;
+        }
+        if (n == 3) {
+            return 2;
+        }
+
+        int threes = n / 3, remainder = n % 3;
+
+        if (remainder == 1) {
+            threes -= 1;
+            remainder = 4;
+        } else if (remainder == 0) {
+            remainder = 1;
+        }
+
+        return (int)(Math.pow(3, threes) * remainder);
+    }
+}
