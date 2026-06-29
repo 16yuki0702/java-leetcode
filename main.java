@@ -7835,3 +7835,16 @@ class Solution {
         return (int)(Math.pow(3, threes) * remainder);
     }
 }
+
+// 344. Reverse String
+class Solution {
+    public void reverseString(char[] s) {
+        int start = 0, end = s.length - 1;
+
+        while (start <= end) {
+            char tmp = s[start];
+            s[start++] = s[end];
+            s[end--] = tmp;
+        }
+    }
+}
