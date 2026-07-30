@@ -7896,3 +7896,27 @@ class Solution {
         return res;
     }
 }
+
+// 349. Intersection of Two Arrays
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set = new HashSet<>();
+        List<Integer> res = new ArrayList<>();
+
+        for (int num : nums1) {
+            set.add(num);
+        }
+
+        for (int num : nums2) {
+            if (set.contains(num)) {
+                res.add(num);
+                set.remove(num);
+            }
+        }
+        int[] result = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            result[i] = res.get(i);
+        }
+        return result;
+    }
+}
