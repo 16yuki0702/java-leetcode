@@ -7941,3 +7941,40 @@ class Solution {
         return Arrays.copyOfRange(nums1, 0, k);
     }
 }
+
+// 352. Data Stream as Disjoint Intervals
+class SummaryRanges {
+    TreeMap<Integer, int[]> map = new TreeMap<>();
+    public SummaryRanges() {}
+
+    public void addNum(int value) {
+        if (map.containsKey(value)) {
+            return;
+        }
+        Integer lo = map.lowerKey(value);
+        Integer hi = map.higherKey(value);
+        if (lo != null && hi != null && map.get(lo)[1] + 1 == value && value + 1 == hi) {
+            map.get(lo)[1] = map.get(hi)[1];
+            map.remove(hi);
+        } else if (lo != null && map.get(lo)[1] + 1 >= value) {
+            map.get(lo)[1] = Math.max(map.get(lo)[1], value);
+        } else if (hi != null && value + 1 == hi) {
+            map.put(value, new int[]{value, map.get(hi)[1]});
+            map.remove(hi);
+        } else {
+            map.put(value, new int[]{value, value});
+        }
+    }
+
+    public int[][] getIntervals() {
+        List<int[]> intervals = new ArrayList<>(map.values());
+        return intervals.toArray(new int[intervals.size()][]);
+    }
+}
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges obj = new SummaryRanges();
+ * obj.addNum(value);
+ * int[][] param_2 = obj.getIntervals();
+ */
